@@ -1,8 +1,20 @@
-import { TypeAliasDeclaration } from 'typescript';
+import { TypeAliasDeclaration, SyntaxKind } from 'typescript';
 
+import { DeclarationVisibility } from '../declarations/DeclarationVisibility';
+import { DefaultDeclaration } from '../declarations/DefaultDeclaration';
 import { TypeAliasDeclaration as TshType } from '../declarations/TypeAliasDeclaration';
+import { MethodDeclaration } from '../declarations/MethodDeclaration';
+import { PropertyDeclaration } from '../declarations/PropertyDeclaration';
 import { Resource } from '../resources/Resource';
-import { isNodeExported } from './parse-utilities';
+import { isMethodSignature, isPropertySignature } from '../type-guards/TypescriptGuards';
+import { parseMethodParams } from './function-parser';
+import {
+    containsModifier,
+    getDefaultResourceIdentifier,
+    getNodeType,
+    isNodeDefaultExported,
+    isNodeExported,
+} from './parse-utilities';
 
 /**
  * Parses a type alias into the declaration.
@@ -12,7 +24,25 @@ import { isNodeExported } from './parse-utilities';
  * @param {TypeAliasDeclaration} node
  */
 export function parseTypeAlias(resource: Resource, node: TypeAliasDeclaration): void {
-    resource.declarations.push(
-        new TshType(node.name.text, isNodeExported(node), node.getStart(), node.getEnd()),
-    );
+    const typeDeclaration = new TshType(node.name.text, isNodeExported(node), node.getStart(), node.getEnd());
+
+    if (node.members) {
+        node.members.forEach((o) => {
+            if (isPropertySignature(o)) {
+                typeDeclaration.properties.push(
+                    new PropertyDeclaration(
+                        (o.name as Identifier).text,
+                        DeclarationVisibility.Public,
+                        getNodeType(o.type),
+                        !!o.questionToken,
+                        containsModifier(o, SyntaxKind.StaticKeyword),
+                        o.getStart(),
+                        o.getEnd(),
+                    ),
+                );
+            }
+        });
+    }
+
+    resource.declarations.push(interfaceDeclaration);
 }

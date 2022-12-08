@@ -1,5 +1,5 @@
 import { AccessorDeclaration } from './AccessorDeclaration';
-import { ClassLikeDeclaration, ExportableDeclaration, GenericDeclaration } from './Declaration';
+import { ClassLikeDeclaration, ExportableDeclaration, GenericDeclaration, TypedDeclaration } from './Declaration';
 import { MethodDeclaration } from './MethodDeclaration';
 import { PropertyDeclaration } from './PropertyDeclaration';
 
@@ -11,11 +11,12 @@ import { PropertyDeclaration } from './PropertyDeclaration';
  * @implements {ExportableDeclaration}
  * @implements {GenericDeclaration}
  */
-export class InterfaceDeclaration implements ClassLikeDeclaration, ExportableDeclaration, GenericDeclaration {
+export class InterfaceDeclaration implements ClassLikeDeclaration, ExportableDeclaration, GenericDeclaration, TypedDeclaration {
     public accessors: AccessorDeclaration[] = [];
     public typeParameters: string[] | undefined;
     public properties: PropertyDeclaration[] = [];
     public methods: MethodDeclaration[] = [];
+    public type: string | undefined = "interface";
 
     constructor(
         public name: string,

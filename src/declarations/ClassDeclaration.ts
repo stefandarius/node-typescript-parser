@@ -1,6 +1,6 @@
 import { AccessorDeclaration } from './AccessorDeclaration';
 import { ConstructorDeclaration } from './ConstructorDeclaration';
-import { ClassLikeDeclaration, ExportableDeclaration, GenericDeclaration } from './Declaration';
+import { ClassLikeDeclaration, ExportableDeclaration, GenericDeclaration, TypedDeclaration } from './Declaration';
 import { MethodDeclaration } from './MethodDeclaration';
 import { PropertyDeclaration } from './PropertyDeclaration';
 
@@ -13,12 +13,13 @@ import { PropertyDeclaration } from './PropertyDeclaration';
  * @implements {ExportableDeclaration}
  * @implements {GenericDeclaration}
  */
-export class ClassDeclaration implements ClassLikeDeclaration, ExportableDeclaration, GenericDeclaration {
+export class ClassDeclaration implements ClassLikeDeclaration, ExportableDeclaration, GenericDeclaration, TypedDeclaration {
     public ctor: ConstructorDeclaration | undefined;
     public accessors: AccessorDeclaration[] = [];
     public properties: PropertyDeclaration[] = [];
     public methods: MethodDeclaration[] = [];
     public typeParameters: string[] | undefined;
+    public type: string | undefined = "class";
 
     constructor(
         public name: string,
