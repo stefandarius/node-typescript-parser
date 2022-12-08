@@ -5,7 +5,7 @@
   "main": "index.js",
   "typings": "index.d.ts",
   "scripts": {
-    "build": "npm run clean && tsc -p ./config/tsconfig.build.json",
+    "build": "npm run clean && tsc -p ./config/tsconfig.base.json",
     "clean": "del-cli ./build ./coverage",
     "develop": "npm run clean && tsc -p .",
     "lint": "tslint -c ./tslint.json -p ./config/tsconfig.build.json 'src/**/*.ts'",
